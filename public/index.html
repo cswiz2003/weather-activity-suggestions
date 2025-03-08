@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Weather Activity Suggestions</title>
+        <link rel="stylesheet" href="/styles/main.css">
+    </head>
+    <body>
+        <div id="weather-container">
+            <h1>Weather Activity Suggestions</h1>
+            <div id="loading">Loading weather data...</div>
+            <div id="error"></div>
+            <div id="weather-info"></div>
+            <div id="suggestions"></div>
+        </div>
+
+        <script type="module">
+            import { getLocation, getWeatherData } from '/js/weather.js';
+            import { suggestActivities } from '/js/suggestions.js';
+
+            // DOM Elements
+            const loadingEl = document.getElementById('loading');
+            const errorEl = document.getElementById('error');
+            const weatherInfoEl = document.getElementById('weather-info');
+            const suggestionsEl = document.getElementById('suggestions');
+
+            function showError(message, details = '') {
+                console.error('Error:', message, details);
+                errorEl.style.display = 'block';
+                errorEl.innerHTML = `Error: ${message}<br>${details}`;
+                loadingEl.style.display = 'none';
+            }
+
+            async function init() {
+                try {
+                    loadingEl.style.display = 'block';
+                    errorEl.style.display = 'none';
+                    weatherInfoEl.innerHTML = '';
+                    suggestionsEl.innerHTML = '';
+
+                    // Get user's location
+                    const position = await getLocation();
+                    const { latitude, longitude } = position.coords;
+
+                    // Get weather data
+                    const weatherData = await getWeatherData(latitude, longitude);
+
+                    // Display weather info
+                    weatherInfoEl.innerHTML = `
+                        <h2>Current Weather in: ${weatherData.city}</h2>
+                        <div class="weather-details">
+                            <p>Temperature: ${weatherData.temp}°C</p>
+                            <p>Conditions: ${weatherData.conditions}</p>
+                        </div>
+                    `;
+
+                    // Get and display activity suggestions
+                    const suggestions = await suggestActivities(weatherData);
+                    suggestionsEl.innerHTML = `
+                        <h2>Suggested Activities (via OpenWeather & FLAN-T5)</h2>
+                        <div class="suggestions-text">
+                            ${suggestions}
+                        </div>
+                    `;
+
+                } catch (error) {
+                    showError(error.message);
+                } finally {
+                    loadingEl.style.display = 'none';
+                }
+            }
+
+            // Start the app when the page loads
+            window.onload = init;
+        </script>
+    </body>
+</html> 
