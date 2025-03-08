@@ -24,13 +24,19 @@ async function getLocation() {
 async function getWeatherData(latitude, longitude) {
     console.log('Fetching weather for:', { latitude, longitude });
     // Try the direct API first
-    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&appid=${process.env.OPENWEATHER_API_KEY}`;
-    
     try {
+        // First, get the API key from the server
+        const keyResponse = await fetch('/api/weather-key');
+        if (!keyResponse.ok) {
+            throw new Error('Could not get API key');
+        }
+        const { key } = await keyResponse.json();
+        
         // Add timeout to the fetch request
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
 
+        const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&appid=${key}`;
         const response = await fetch(url, {
             signal: controller.signal
         });
