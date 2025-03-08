@@ -24,7 +24,7 @@ async function getLocation() {
 async function getWeatherData(latitude, longitude) {
     console.log('Fetching weather for:', { latitude, longitude });
     // Try the direct API first
-    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric`;
+    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&appid=${process.env.OPENWEATHER_API_KEY}`;
     
     try {
         // Add timeout to the fetch request
@@ -32,10 +32,7 @@ async function getWeatherData(latitude, longitude) {
         const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
 
         const response = await fetch(url, {
-            signal: controller.signal,
-            headers: {
-                'Authorization': `Bearer ${process.env.OPENWEATHER_API_KEY}`
-            }
+            signal: controller.signal
         });
         
         clearTimeout(timeoutId);
