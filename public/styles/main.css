@@ -1,49 +1,54 @@
 /* General styles */
 body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-    line-height: 1.6;
-    background-color: #f5f5f5;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f0f2f5;
+    color: #333;
 }
 
 /* Container styles */
 #weather-container {
-    max-width: 600px;
+    max-width: 800px;
     margin: 0 auto;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    background-color: white;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 /* Loading indicator */
 #loading {
     text-align: center;
-    display: none;
+    padding: 20px;
     color: #666;
 }
 
 /* Error message */
 #error {
-    color: #dc3545;
     display: none;
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 4px;
-    background-color: #ffe6e6;
+    background-color: #ffebee;
+    color: #c62828;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 20px 0;
 }
 
 /* Suggestions text */
 .suggestions-text {
-    white-space: pre-line;
-    padding: 15px;
-    background-color: #f8f9fa;
-    border-radius: 4px;
+    margin-top: 20px;
 }
 
 /* Headings */
-h1, h2 {
-    color: #333;
+h1 {
+    text-align: center;
+    color: #1a73e8;
+    margin-bottom: 30px;
+}
+
+h2 {
+    color: #444;
+    margin-top: 25px;
 }
 
 /* Weather info */
@@ -54,7 +59,48 @@ h1, h2 {
 /* Weather details */
 .weather-details {
     background-color: #f8f9fa;
-    padding: 15px;
-    border-radius: 4px;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 15px 0;
+}
+
+.weather-details p {
     margin: 10px 0;
+    font-size: 1.1em;
+}
+
+.suggestion-item {
+    background-color: #f8f9fa;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border-left: 4px solid #1a73e8;
+}
+
+.suggestion-item h3 {
+    margin: 0 0 10px 0;
+    color: #1a73e8;
+}
+
+.suggestion-item p {
+    margin: 0;
+    color: #555;
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+    
+    #weather-container {
+        padding: 15px;
+    }
+    
+    h1 {
+        font-size: 1.5em;
+    }
+    
+    h2 {
+        font-size: 1.2em;
+    }
 } 

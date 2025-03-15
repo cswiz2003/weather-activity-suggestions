@@ -1,39 +1,26 @@
 // Get AI-powered activity suggestions
-async function suggestActivities(weatherData) {
-    console.log('Generating suggestions for weather:', weatherData);
+export async function suggestActivities(weatherData) {
     try {
-        const prompt = `Location: ${weatherData.city}
-Temperature: ${weatherData.temp}°C
-Weather: ${weatherData.conditions}`;
-
-        const response = await fetch('/api/suggest', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                inputs: prompt
-            })
-        });
-
-        if (!response.ok) {
-            const errorText = await response.text();
-            console.error('API Response:', errorText);
-            throw new Error(`API returned status: ${response.status}`);
+        const { suggestions } = weatherData;
+        
+        if (!suggestions || suggestions.length === 0) {
+            return 'No suggestions available at the moment.';
         }
 
-        const data = await response.json();
-        console.log('AI response:', data);
+        // Format suggestions into HTML
+        const suggestionsHtml = suggestions
+            .map(suggestion => `
+                <div class="suggestion-item">
+                    <h3>${suggestion.activity}</h3>
+                    <p>${suggestion.reason}</p>
+                </div>
+            `)
+            .join('');
 
-        if (!data || !data[0] || !data[0].generated_text) {
-            throw new Error('Invalid response format from AI');
-        }
-
-        return data[0].generated_text;
+        return suggestionsHtml;
     } catch (error) {
-        console.error('AI suggestion error:', error);
-        // Fallback to local suggestions if AI fails
-        return getFallbackSuggestions(weatherData);
+        console.error('Error processing suggestions:', error);
+        return 'Unable to generate suggestions at this time.';
     }
 }
 
@@ -96,6 +83,4 @@ function getFallbackSuggestions(weatherData) {
     }
 
     return suggestions.join('\n');
-}
-
-export { suggestActivities }; 
+} 

@@ -2,6 +2,9 @@
 
 An AI-powered web application that suggests activities based on your current weather conditions. The app uses your location to fetch real-time weather data and generates personalized activity suggestions using the FLAN-T5 language model.
 
+## Screenshot
+![Weather Activity Suggestions App](Output.png)
+
 ## Features
 
 - Real-time weather data using OpenWeatherMap API
